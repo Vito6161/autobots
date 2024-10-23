@@ -48,15 +48,15 @@ void loop(){
   
 	//Identifica se os dois sensores viram branco
 	if(bbbb()){
-		robo.acionarMotores(50,50);	//Aciona os dois motores com a mesma velocidade
+		robo.acionarMotores(25,25);	//Aciona os dois motores com a mesma velocidade
 	}
 	//Identifica se o sensor da esquerda viu banco e o da direita viu preto
 	else if (bppp() || bbpp() || bbbp()){
- 		robo.acionarMotores(50,0);	//Aciona o motor esquerdo e mantem o motor direito desligado
+ 		robo.acionarMotores(35,-35);	//Aciona o motor esquerdo e mantem o motor direito desligado
 	}
 	//Identifica se o sensor da direita viu banco e o da esquerda viu preto
 	else if (pppb() || ppbb() || pbbb()){
-		robo.acionarMotores(0,50);	//Aciona o motor direito e mantem o motor esquerdo desligado
+		robo.acionarMotores(-35,35);	//Aciona o motor direito e mantem o motor esquerdo desligado
 	}
 	else{ //Identifica se os dois sensores viram preto
 		robo.acionarMotores(0,0);
