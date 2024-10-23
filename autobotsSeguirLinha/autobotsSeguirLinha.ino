@@ -25,6 +25,11 @@ float valorSensorEsq;
 float valorSensorMaisEsq;
 float valorSensorMaisDir;
 
+const int portaSensorMaisDir = 0;
+const int portaSensorDir = 1;
+const int portaSensorEsq = 2;
+const int portaSensorMaisEsq = 3;
+
 void setup(){
 	robo.configurar();
 }
@@ -34,6 +39,12 @@ void loop(){
 	valorSensorEsq = robo.lerSensorLinhaEsq(); //Le o valor do sensor esquerdo e coloca dentro da variavel valor_sensor_esq
 	valorSensorDir = robo.lerSensorLinhaDir(); //Le o valor do sensor direito e coloca dentro da variavel valor_sensor_dir
   valorSensorMaisDir = robo.lerSensorLinhaMaisDir();
+
+ //LIGA TODOS OS SENSORES DE REFLETÂNCIA
+  digitalWrite(portaSensorMaisDir, HIGH);
+  digitalWrite(portaSensorDir, HIGH);
+  digitalWrite(portaSensorMaisEsq, HIGH);
+  digitalWrite(portaSensorEsq, HIGH);
   
 	//Identifica se os dois sensores viram branco
 	if(bbbb()){
