@@ -18,7 +18,7 @@
 //SENSOR_LINHA_MAIS_DIREITO			A0	
 //-----PINOS PARA SENSORES REFLETANCIA-----//
 
-#define DIVISOR_BRANCO_PRETO 50
+#define DIVISOR_BRANCO_PRETO 90
 
 float valorSensorDir;
 float valorSensorEsq;
@@ -47,7 +47,7 @@ void loop(){
   digitalWrite(portaSensorEsq, HIGH);
   
 	//Identifica se os dois sensores viram branco
-	if(bbbb()){
+	if(bbbb() || bppb() || bpbb() || bbpb()){
 		robo.acionarMotores(25,25);	//Aciona os dois motores com a mesma velocidade
 	}
 	//Identifica se o sensor da esquerda viu banco e o da direita viu preto
@@ -58,9 +58,11 @@ void loop(){
 	else if (pppb() || ppbb() || pbbb()){
 		robo.acionarMotores(-35,35);	//Aciona o motor direito e mantem o motor esquerdo desligado
 	}
+	/*
 	else{ //Identifica se os dois sensores viram preto
 		robo.acionarMotores(0,0);
 	}
+ */
 
 }
 
@@ -73,3 +75,5 @@ inline bool bbpp() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSen
 inline bool bbbp() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO);}
 inline bool bppb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bbbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
+inline bool bbpb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
+inline bool bpbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
