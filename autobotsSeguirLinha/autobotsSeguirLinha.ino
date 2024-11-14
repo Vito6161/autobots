@@ -1,6 +1,8 @@
 #include <robo_hardware2.h> 
 #include <Servo.h>
 
+// autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots //
+
 //-----PINOS PARA LIGAR MOTORES-----//
 //Motor1:
 //pino1 PWM_RODA_DIREITA 	6
@@ -18,7 +20,11 @@
 //SENSOR_LINHA_MAIS_DIREITO			A0	
 //-----PINOS PARA SENSORES REFLETANCIA-----//
 
+
 #define DIVISOR_BRANCO_PRETO 90
+
+#define velFrente 25
+#define velVirar 30
 
 float valorSensorDir;
 float valorSensorEsq;
@@ -46,23 +52,27 @@ void loop(){
   digitalWrite(portaSensorMaisEsq, HIGH);
   digitalWrite(portaSensorEsq, HIGH);
   
-	//Identifica se os dois sensores viram branco
+	
 	if(bbbb() || bppb() || bpbb() || bbpb()){
-		robo.acionarMotores(25,25);	//Aciona os dois motores com a mesma velocidade
+		robo.acionarMotores(velFrente, velFrente);	//ANDA PRA FRENTE
+    LigarJuntos();
 	}
-	//Identifica se o sensor da esquerda viu banco e o da direita viu preto
+	
 	else if (bppp() || bbpp() || bbbp()){
- 		robo.acionarMotores(35,-35);	//Aciona o motor esquerdo e mantem o motor direito desligado
+ 		robo.acionarMotores(velVirar,-velVirar);	//ANDA PRA DIREITA
+    LigarVerde();
 	}
-	//Identifica se o sensor da direita viu banco e o da esquerda viu preto
+	
 	else if (pppb() || ppbb() || pbbb()){
-		robo.acionarMotores(-35,35);	//Aciona o motor direito e mantem o motor esquerdo desligado
+		robo.acionarMotores(-velVirar, velVirar);	//ANDA PRA ESQUERDA
+    LigarAzul();
 	}
-	/*
+	
 	else{ //Identifica se os dois sensores viram preto
 		robo.acionarMotores(0,0);
+    ApagarLeds();
 	}
- */
+ 
 
 }
 
@@ -77,3 +87,39 @@ inline bool bppb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSen
 inline bool bbbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bbpb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bpbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
+
+void LigarJuntos() 
+{
+    digitalWrite(0, HIGH);
+    digitalWrite(1, HIGH);
+}
+
+/*
+void PiscandoAlternados()
+{
+    digitalWrite(1, LOW);   
+    digitalWrite(0, HIGH);
+    delay(espera);
+    digitalWrite(1, HIGH);   
+    digitalWrite(0, LOW);
+    delay(espera);
+}
+*/
+
+void ApagarLeds()
+{
+    digitalWrite(1, LOW);
+    digitalWrite(0, LOW);
+}
+
+void LigarVerde()
+{
+    digitalWrite(0, LOW);
+    digitalWrite(1, HIGH);
+}
+
+void LigarAzul()
+{
+    digitalWrite(1, LOW);
+    digitalWrite(0, HIGH);
+}
