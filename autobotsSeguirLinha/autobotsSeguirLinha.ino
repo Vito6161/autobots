@@ -53,17 +53,17 @@ void loop(){
   digitalWrite(portaSensorEsq, HIGH);
   
 	
-	if(bbbb() || bppb() || bpbb() || bbpb()){
+	if(bbbb() || bppb()){
 		robo.acionarMotores(velFrente, velFrente);	//ANDA PRA FRENTE
     LigarJuntos();
 	}
 	
-	else if (bppp() || bbpp() || bbbp()){
+	else if (bppp() || bbpp() || bbbp() || bpbb()){
  		robo.acionarMotores(velVirar,-velVirar);	//ANDA PRA DIREITA
     LigarVerde();
 	}
 	
-	else if (pppb() || ppbb() || pbbb()){
+	else if (pppb() || ppbb() || pbbb() || bbpb()){
 		robo.acionarMotores(-velVirar, velVirar);	//ANDA PRA ESQUERDA
     LigarAzul();
 	}
