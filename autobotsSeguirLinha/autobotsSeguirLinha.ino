@@ -30,6 +30,7 @@ float valorSensorDir;
 float valorSensorEsq;
 float valorSensorMaisEsq;
 float valorSensorMaisDir;
+float valorSensorSonar;
 
 const int portaSensorMaisDir = 0;
 const int portaSensorDir = 1;
@@ -45,12 +46,30 @@ void loop(){
 	valorSensorEsq = robo.lerSensorLinhaEsq(); //Le o valor do sensor esquerdo e coloca dentro da variavel valor_sensor_esq
 	valorSensorDir = robo.lerSensorLinhaDir(); //Le o valor do sensor direito e coloca dentro da variavel valor_sensor_dir
   valorSensorMaisDir = robo.lerSensorLinhaMaisDir();
+  valorSensorSonar = robo.lerSensorSonarFrontal();
 
  //LIGA TODOS OS SENSORES DE REFLETÂNCIA
   digitalWrite(portaSensorMaisDir, HIGH);
   digitalWrite(portaSensorDir, HIGH);
   digitalWrite(portaSensorMaisEsq, HIGH);
   digitalWrite(portaSensorEsq, HIGH);
+
+  if(valorSensorSonar <= 5)
+  {
+    Desviar();
+    LigarJuntos();
+    delay(50);
+    ApagarLeds();
+    delay(50);
+    LigarJuntos();
+    delay(50);
+    ApagarLeds();
+    delay(50);
+    LigarJuntos();
+    delay(50);
+    ApagarLeds();
+    delay(5000);
+  }
   
 	
 	if(bbbb() || bppb() || bpbb() || bbpb()){
@@ -88,23 +107,29 @@ inline bool bbbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSen
 inline bool bbpb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bpbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 
+void Desviar() 
+{
+    int velViradaDesviar = 30;
+    int velDesviar = 35;
+  
+    robo.acionarMotores(0,0); // identifica o objeto e para o robo
+    delay(500);
+    
+    robo.acionarMotores(velViradaDesviar, -velViradaDesviar); // gira o robo pra direita
+    delay(50);
+
+    robo.acionarMotores(velDesviar, velDesviar); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(50);
+
+    robo.acionarMotores(0,0);
+}
+
 void LigarJuntos() 
 {
     digitalWrite(0, HIGH);
     digitalWrite(1, HIGH);
 }
 
-/*
-void PiscandoAlternados()
-{
-    digitalWrite(1, LOW);   
-    digitalWrite(0, HIGH);
-    delay(espera);
-    digitalWrite(1, HIGH);   
-    digitalWrite(0, LOW);
-    delay(espera);
-}
-*/
 
 void ApagarLeds()
 {
