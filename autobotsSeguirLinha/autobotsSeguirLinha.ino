@@ -24,14 +24,16 @@
 #define DIVISOR_BRANCO_PRETO 90
 
 #define velFrente 25
-#define velVirar 30
+#define velVirar 25
 
-    #define velViradaDesviar 35
-    #define velDesviar 30
+#define velDireito 27
 
-    #define espera 550
-    #define esperaFrente 1150
-    #define esperaParado 1000
+//#define velViradaDesviar 30
+//#define velDesviar 25
+
+#define espera 675 //estava em 650, agora esta em 675
+#define esperaFrente 1000 // so funciona se, ao colocar a bateria na fonte a uma D.D.P de 11V, a amperagem deve estar entre 1.1 ou 0.8 amperes.
+//#define esperaParado 1000
 
 float valorSensorDir;
 float valorSensorEsq;
@@ -61,25 +63,26 @@ void loop(){
   digitalWrite(portaSensorMaisEsq, HIGH);
   digitalWrite(portaSensorEsq, HIGH);
 
-  if(valorSensorSonar <= 5)
+
+  if(valorSensorSonar <= 2.8)
   {
-    Desviar();
+    DesviarDireita();
     
   }
   
 	
-	if(bbbb() || bppb() || bpbb() || bbpb()){
-		robo.acionarMotores(velFrente, velFrente);	//ANDA PRA FRENTE
+	if(bbbb() || bppb()|| pppp()){
+		robo.acionarMotores(velFrente, velDireito);	//ANDA PRA FRENTE
     LigarJuntos();
 	}
 	
-	else if (bppp() || bbpp() || bbbp()){
- 		robo.acionarMotores(velVirar,-velVirar);	//ANDA PRA DIREITA
+	else if (bppp() || bbpp() || bbbp() || bbpb()){
+ 		robo.acionarMotores(velVirar,-velDireito);	//ANDA PRA DIREITA
     LigarVerde();
 	}
 	
-	else if (pppb() || ppbb() || pbbb()){
-		robo.acionarMotores(-velVirar, velVirar);	//ANDA PRA ESQUERDA
+	else if (pppb() || ppbb() || pbbb() || bpbb()){
+		robo.acionarMotores(-velVirar, velDireito);	//ANDA PRA ESQUERDA
     LigarAzul();
 	}
 	
@@ -91,7 +94,7 @@ void loop(){
 
 }
 
-//inline bool pppp() {valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO}
+inline bool pppp() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO);}
 inline bool pppb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool ppbb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool pbbb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
@@ -103,51 +106,96 @@ inline bool bbbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSen
 inline bool bbpb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bpbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 
-void Desviar() 
+void DesviarDireita() 
 {
  
     robo.acionarMotores(0,0); // identifica o objeto e para o robo
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(velViradaDesviar, -velViradaDesviar); // gira o robo pra direita
+    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita   
+    delay(espera);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(esperaFrente);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
+    delay(espera);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(esperaFrente);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(-velFrente, 23); // gira o robo pra esquerda
+    delay(espera);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(esperaFrente);
+  
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
+    delay(espera);
     
+}
+
+void DesviarEsquerda() 
+{
+ 
+    robo.acionarMotores(0,0); // identifica o objeto e para o robo
+    delay(espera);
+
+    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda  
     delay(espera);
 
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(velDesviar, velDesviar); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(-velViradaDesviar, velViradaDesviar); // gira o robo pra esquerda
+    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
     delay(espera);
 
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(velDesviar, velDesviar); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(-velViradaDesviar, velViradaDesviar); // gira o robo pra esquerda
+    robo.acionarMotores(velFrente, -23); // gira o robo pra direita
     delay(espera);
 
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(velDesviar, velDesviar); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
-
-    
+  
     robo.acionarMotores(0,0);
-    delay(esperaParado);
+    delay(espera);
 
-    robo.acionarMotores(velViradaDesviar, -velViradaDesviar); // gira o robo pra direita
+    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
     delay(espera);
     
 }
