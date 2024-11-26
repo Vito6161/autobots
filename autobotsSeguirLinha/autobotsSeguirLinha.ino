@@ -28,11 +28,8 @@
 
 #define velDireito 27
 
-//#define velViradaDesviar 30
-//#define velDesviar 25
-
-#define espera 675 //estava em 650, agora esta em 675
-#define esperaFrente 1000 // so funciona se, ao colocar a bateria na fonte a uma D.D.P de 11V, a amperagem deve estar entre 1.1 ou 0.8 amperes.
+#define espera 690 //estava em 650, agora esta em 675
+#define esperaFrente 950 // so funciona se, ao colocar a bateria na fonte a uma D.D.P de 11V, a amperagem deve estar entre 1.1 ou 0.8 amperes.
 //#define esperaParado 1000
 
 float valorSensorDir;
@@ -45,6 +42,13 @@ const int portaSensorMaisDir = 0;
 const int portaSensorDir = 1;
 const int portaSensorEsq = 2;
 const int portaSensorMaisEsq = 3;
+
+RGB valSensorRGBEsquerdo
+RGB valSensorRGBDireito
+
+
+valSensorRGBEsquerdo = robo.getRGBEsquerdo();
+valSensorRGBDireito = robo.getRGBDireito();
 
 void setup(){
 	robo.configurar();
@@ -63,15 +67,20 @@ void loop(){
   digitalWrite(portaSensorMaisEsq, HIGH);
   digitalWrite(portaSensorEsq, HIGH);
 
+  if(pppp())
+  {
+    BecoSemSaida();
+  }
 
-  if(valorSensorSonar <= 2.8)
+
+  if(valorSensorSonar <= 3.3)
   {
     DesviarDireita();
     
   }
   
 	
-	if(bbbb() || bppb()|| pppp()){
+	if(bbbb() || bppb()){
 		robo.acionarMotores(velFrente, velDireito);	//ANDA PRA FRENTE
     LigarJuntos();
 	}
@@ -118,7 +127,7 @@ void DesviarDireita()
     robo.acionarMotores(0,0);
     delay(espera);
 
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, 24); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
     robo.acionarMotores(0,0);
@@ -165,7 +174,7 @@ void DesviarEsquerda()
     robo.acionarMotores(0,0);
     delay(espera);
 
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, 24); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
     robo.acionarMotores(0,0);
@@ -198,6 +207,21 @@ void DesviarEsquerda()
     robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
     delay(espera);
     
+}
+
+void BecoSemSaida()
+{
+    robo.acionarMotores(0, 0);
+    delay(100);
+    robo.acionarMotores(velFrente, velFrente);
+    delay(70);
+    robo.acionarMotores(0,0);
+
+    digitalWrite(2, HIGH);
+    digitalWrite(3, LOW);
+
+    
+  
 }
 
 void LigarJuntos() 
