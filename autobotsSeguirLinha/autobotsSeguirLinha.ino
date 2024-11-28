@@ -30,7 +30,6 @@
 
 #define espera 690 //estava em 650, agora esta em 675
 #define esperaFrente 950 // so funciona se, ao colocar a bateria na fonte a uma D.D.P de 11V, a amperagem deve estar entre 1.1 ou 0.8 amperes.
-//#define esperaParado 1000
 
 float valorSensorDir;
 float valorSensorEsq;
@@ -43,18 +42,17 @@ const int portaSensorDir = 1;
 const int portaSensorEsq = 2;
 const int portaSensorMaisEsq = 3;
 
-RGB valSensorRGBEsquerdo
-RGB valSensorRGBDireito
-
-
-valSensorRGBEsquerdo = robo.getRGBEsquerdo();
-valSensorRGBDireito = robo.getRGBDireito();
+RGB valSensorRGBEsquerdo;
+RGB valSensorRGBDireito;
+bool RGBEsquerdo, RGBDireito;
 
 void setup(){
 	robo.configurar();
 }
 
-void loop(){
+void loop()
+{
+
   valorSensorMaisEsq = robo.lerSensorLinhaMaisEsq();
 	valorSensorEsq = robo.lerSensorLinhaEsq(); //Le o valor do sensor esquerdo e coloca dentro da variavel valor_sensor_esq
 	valorSensorDir = robo.lerSensorLinhaDir(); //Le o valor do sensor direito e coloca dentro da variavel valor_sensor_dir
@@ -81,20 +79,7 @@ void loop(){
   
 	
 	if(bbbb() || bppb()){
-<<<<<<< HEAD
 		robo.acionarMotores(velFrente, velFrente);	//ANDA PRA FRENTE
-    LigarJuntos();
-	}
-	
-	else if (bppp() || bbpp() || bbbp() || bpbb()){
- 		robo.acionarMotores(velVirar,-velVirar);	//ANDA PRA DIREITA
-    LigarVerde();
-	}
-	
-	else if (pppb() || ppbb() || pbbb() || bbpb()){
-		robo.acionarMotores(-velVirar, velVirar);	//ANDA PRA ESQUERDA
-=======
-		robo.acionarMotores(velFrente, velDireito);	//ANDA PRA FRENTE
     LigarJuntos();
 	}
 	
@@ -105,7 +90,6 @@ void loop(){
 	
 	else if (pppb() || ppbb() || pbbb() || bpbb()){
 		robo.acionarMotores(-velVirar, velDireito);	//ANDA PRA ESQUERDA
->>>>>>> 70c2b3e470c7ad36d9e5b94bf951fb7bfde78802
     LigarAzul();
 	}
 	
@@ -225,15 +209,65 @@ void DesviarEsquerda()
 
 void BecoSemSaida()
 {
+//vcc sensor esquerdo: 2 | vcc sensor direito: 3
+
     robo.acionarMotores(0, 0);
-    delay(100);
+    delay(50);
     robo.acionarMotores(velFrente, velFrente);
     delay(70);
     robo.acionarMotores(0,0);
 
     digitalWrite(2, HIGH);
-    digitalWrite(3, LOW);
+    digitalWrite(3, LOW); //liga o esquerdo e desliga o direito
 
+    valSensorRGBEsquerdo = robo.getRGBEsquerdo();
+
+    if(valSensorRGBEsquerdo.verde > valSensorRGBEsquerdo.azul && valSensorRGBEsquerdo.verde > valSensorRGBEsquerdo.vermelho)
+    {
+      RGBEsquerdo = true;
+    } 
+    else
+    {
+      RGBEsquerdo = false;
+    }
+
+    digitalWrite(2, LOW);
+    digitalWrite(3, HIGH); //liga o direito e desliga o esquerdo
+
+    valSensorRGBDireito = robo.getRGBDireito();
+
+    if(valSensorRGBDireito.verde > valSensorRGBDireito.azul && valSensorRGBDireito.verde > valSensorRGBDireito.vermelho)
+    {
+      RGBDireito = true;
+    } 
+    else
+    {
+      RGBDireito = false;
+    }
+
+    if(RGBEsquerdo == true && RGBDireito == true) //os 2 sensores detectaram verde e o robô deve voltar
+    {
+      robo.acionarMotores(velFrente, -velDireito);
+      delay(1500);
+    }
+
+    if(RGBEsquerdo == true && RGBDireito == false) // esquerda verde e direita nada, vira pra esquerda
+    {
+      robo.acionarMotores(-velFrente, velDireito);
+      delay(200);
+    }
+
+    if(RGBEsquerdo == false && RGBDireito == true) // esquerda nada e direita verde, vira pra direita
+    {
+      robo.acionarMotores(velFrente, -velDireito);
+      delay(200);
+    }
+
+    if(RGBEsquerdo == false && RGBDireito == false) //os 2 sensores não detectaram nada e o robô deve seguir em frente
+    {
+      robo.acionarMotores(velFrente, velDireito);
+      delay(200);
+    }
     
   
 }
