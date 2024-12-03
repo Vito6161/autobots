@@ -23,13 +23,13 @@
 
 #define DIVISOR_BRANCO_PRETO 90
 
-#define velFrente 25
+#define velFrente 25 //25
 #define velVirar 25
 
-#define velDireito 27
+#define velDireito 26 // 27
 
-#define espera 690 //estava em 650, agora esta em 675
-#define esperaFrente 950 // so funciona se, ao colocar a bateria na fonte a uma D.D.P de 11V, a amperagem deve estar entre 1.1 ou 0.8 amperes.
+#define espera 780 //750
+#define esperaFrente 870 ///850
 
 float valorSensorDir;
 float valorSensorEsq;
@@ -71,14 +71,14 @@ void loop()
   }
 
 
-  if(valorSensorSonar <= 3.3)
+  if(valorSensorSonar <= 5)
   {
     DesviarDireita();
     
   }
   
 	
-	if(bbbb() || bppb()){
+	if(bbbb() || bppb() || pppp() || pbpb() || bpbp() || pbbp()){
 		robo.acionarMotores(velFrente, velFrente);	//ANDA PRA FRENTE
     LigarJuntos();
 	}
@@ -92,6 +92,11 @@ void loop()
 		robo.acionarMotores(-velVirar, velDireito);	//ANDA PRA ESQUERDA
     LigarAzul();
 	}
+ else if (pbbp()){
+    robo.acionarMotores(-velFrente, -velDireito);
+    delay(50);
+  
+ }
 	
 	else{ //Identifica se os dois sensores viram preto
 		robo.acionarMotores(0,0);
@@ -101,6 +106,7 @@ void loop()
 
 }
 
+inline bool pbbp() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO);}
 inline bool pppp() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO);}
 inline bool pppb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool ppbb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
@@ -112,6 +118,8 @@ inline bool bppb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSen
 inline bool bbbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bbpb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
 inline bool bpbb() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
+inline bool pbpb() {return(valorSensorMaisEsq < DIVISOR_BRANCO_PRETO && valorSensorEsq > DIVISOR_BRANCO_PRETO && valorSensorDir < DIVISOR_BRANCO_PRETO && valorSensorMaisDir > DIVISOR_BRANCO_PRETO);}
+inline bool bpbp() {return(valorSensorMaisEsq > DIVISOR_BRANCO_PRETO && valorSensorEsq < DIVISOR_BRANCO_PRETO && valorSensorDir > DIVISOR_BRANCO_PRETO && valorSensorMaisDir < DIVISOR_BRANCO_PRETO);}
 
 void DesviarDireita() 
 {
@@ -125,7 +133,7 @@ void DesviarDireita()
     robo.acionarMotores(0,0);
     delay(espera);
 
-    robo.acionarMotores(velFrente, 24); //anda pra frente depois de girar para poder desviar do obstaculo
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
     robo.acionarMotores(0,0);
@@ -143,14 +151,14 @@ void DesviarDireita()
     robo.acionarMotores(0,0);
     delay(espera);
 
-    robo.acionarMotores(-velFrente, 23); // gira o robo pra esquerda
+    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
     delay(espera);
 
     robo.acionarMotores(0,0);
     delay(espera);
 
     robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
+    delay(750);
   
     robo.acionarMotores(0,0);
     delay(espera);
@@ -162,23 +170,11 @@ void DesviarDireita()
 
 void DesviarEsquerda() 
 {
- 
+  
     robo.acionarMotores(0,0); // identifica o objeto e para o robo
     delay(espera);
 
-    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda  
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, 24); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
+    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita   
     delay(espera);
 
     robo.acionarMotores(0,0);
@@ -187,22 +183,34 @@ void DesviarEsquerda()
     robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
     delay(esperaFrente);
 
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, -23); // gira o robo pra direita
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
-  
     robo.acionarMotores(0,0);
     delay(espera);
 
     robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
+    delay(espera);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(esperaFrente);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
+    delay(espera);
+
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
+    delay(750);
+  
+    robo.acionarMotores(0,0);
+    delay(espera);
+
+    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
     delay(espera);
     
 }
@@ -210,12 +218,13 @@ void DesviarEsquerda()
 void BecoSemSaida()
 {
 //vcc sensor esquerdo: 2 | vcc sensor direito: 3
-
+    robo.acionarMotores(velFrente, velDireito);
+    delay(7);
     robo.acionarMotores(0, 0);
+    digitalWrite(2, LOW);
+    digitalWrite(3, LOW);
     delay(50);
-    robo.acionarMotores(velFrente, velFrente);
-    delay(70);
-    robo.acionarMotores(0,0);
+    
 
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW); //liga o esquerdo e desliga o direito
@@ -248,7 +257,7 @@ void BecoSemSaida()
     if(RGBEsquerdo == true && RGBDireito == true) //os 2 sensores detectaram verde e o robô deve voltar
     {
       robo.acionarMotores(velFrente, -velDireito);
-      delay(1500);
+      delay(1400);
     }
 
     if(RGBEsquerdo == true && RGBDireito == false) // esquerda verde e direita nada, vira pra esquerda
@@ -260,13 +269,19 @@ void BecoSemSaida()
     if(RGBEsquerdo == false && RGBDireito == true) // esquerda nada e direita verde, vira pra direita
     {
       robo.acionarMotores(velFrente, -velDireito);
-      delay(200);
+      delay(250);
     }
 
     if(RGBEsquerdo == false && RGBDireito == false) //os 2 sensores não detectaram nada e o robô deve seguir em frente
     {
       robo.acionarMotores(velFrente, velDireito);
-      delay(200);
+      delay(250);
+    } 
+    else {
+      LigarJuntos();
+      delay(300);
+      ApagarLeds();
+      robo.acionarMotores(velFrente, velDireito);
     }
     
   
