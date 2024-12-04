@@ -65,11 +65,12 @@ void loop()
   digitalWrite(portaSensorMaisEsq, HIGH);
   digitalWrite(portaSensorEsq, HIGH);
 
+/*
   if(pppp())
   {
     BecoSemSaida();
   }
-
+*/
 
   if(valorSensorSonar <= 5)
   {
