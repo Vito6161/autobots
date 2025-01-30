@@ -23,10 +23,10 @@
 
 #define DIVISOR_BRANCO_PRETO 90
 
-#define velFrente 25 //25
+#define velFrente 25//25
 #define velVirar 25
 
-#define velDireito 26 // 27
+#define velDireito 26 // 26
 
 #define espera 780 //750
 #define esperaFrente 870 ///850
@@ -206,7 +206,7 @@ void DesviarEsquerda()
     delay(espera);
 
     robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(750);
+    delay(710);
   
     robo.acionarMotores(0,0);
     delay(espera);
@@ -222,13 +222,6 @@ void BecoSemSaida()
     robo.acionarMotores(velFrente, velDireito);
     delay(7);
     robo.acionarMotores(0, 0);
-    digitalWrite(2, LOW);
-    digitalWrite(3, LOW);
-    delay(50);
-    
-
-    digitalWrite(2, HIGH);
-    digitalWrite(3, LOW); //liga o esquerdo e desliga o direito
 
     valSensorRGBEsquerdo = robo.getRGBEsquerdo();
 
@@ -240,9 +233,6 @@ void BecoSemSaida()
     {
       RGBEsquerdo = false;
     }
-
-    digitalWrite(2, LOW);
-    digitalWrite(3, HIGH); //liga o direito e desliga o esquerdo
 
     valSensorRGBDireito = robo.getRGBDireito();
 
