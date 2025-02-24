@@ -5,12 +5,22 @@
 
 class Refletancia
 {
-  public:
-    bool Frente();
-    bool Esquerda();
-    bool Direita();
-    bool Parar();
-    bool Re();
+  public: 
+    bool pbbp();
+    bool pppp();
+    bool pppb();
+    bool ppbb();
+    bool pbbb();
+    bool bppp();
+    bool bbpp();
+    bool bbbp();
+    bool bppb();
+    bool bbbb();
+    bool bbpb();
+    bool bpbb();
+    bool pbpb();
+    bool bpbp();
+ 
 };
 
 #endif
