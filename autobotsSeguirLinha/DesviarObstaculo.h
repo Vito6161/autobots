@@ -6,14 +6,15 @@ class Desvio
     
     void DesviarEsquerda();
     void DesviarDireita();
-
-  private: 
-    
-    #define DistanciaSensor 4
-    #define espera 780 
-    #define esperaFrente 870  
-
     void atualizarValorSonar();
 
     float valorSonar;
+
+  private: 
+    
+    #define espera 780 
+    #define esperaFrente 870  
+
+    #define velFrente 25
+    #define velDireito 26
 };

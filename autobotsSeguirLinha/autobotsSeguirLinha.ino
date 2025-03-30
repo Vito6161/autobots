@@ -1,5 +1,6 @@
 #include <robo_hardware2.h>
 #include "lerRefletancia.h"
+#include "DesviarObstaculo.h"
 
 // autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots autobots //
 
@@ -12,12 +13,8 @@ const int portaSensorDir = 1;
 const int portaSensorEsq = 2;
 const int portaSensorMaisEsq = 3;
 
-digitalWrite(portaSensorMaisDir, HIGH);
-digitalWrite(portaSensorDir, HIGH);
-digitalWrite(portaSensorMaisEsq, HIGH);
-digitalWrite(portaSensorEsq, HIGH);
-
 lerRefletancia refle;
+Desvio desvi;
 
 void setup()
 {
@@ -27,6 +24,13 @@ void setup()
 void loop()
 {
   refle.atualizarValoresRef();
+  desvi.atualizarValorSonar();
+
+  if(desvi.valorSonar <= 4)
+  {
+    desvi.DesviarEsquerda();
+  }
+
 
   if(refle.Frente())
   {
@@ -48,4 +52,9 @@ void loop()
   {
     robo.acionarMotores(0,0);
   }
+
+  digitalWrite(portaSensorMaisDir, HIGH);
+  digitalWrite(portaSensorDir, HIGH);
+  digitalWrite(portaSensorMaisEsq, HIGH);
+  digitalWrite(portaSensorEsq, HIGH);
 }
