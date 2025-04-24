@@ -24,11 +24,11 @@ void setup()
 void loop()
 {
   refle.atualizarValoresRef();
-  desvi.atualizarValorSonar();
+  desvi.AtualizarValorSonar();
 
   if(desvi.valorSonar <= 4)
   {
-    desvi.DesviarEsquerda();
+    desvi.DesviarObstaculo(1);
   }
 
 

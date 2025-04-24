@@ -4,17 +4,21 @@ class Desvio
 {
   public:
     
-    void DesviarEsquerda();
-    void DesviarDireita();
-    void atualizarValorSonar();
+    void DesviarObstaculo(int sentido);
+    void AtualizarValorSonar();
 
     float valorSonar;
 
   private: 
-    
-    #define espera 780 
-    #define esperaFrente 870  
 
-    #define velFrente 25
-    #define velDireito 26
+    int velFrente = 25;
+    int velEsq;
+    int velDir;
+    
+    int esperaCiclos = 500;
+    int esperaFrente = 60;
+    int esperaVirar = 50;
+
+    
+    
 };

@@ -1,0 +1,20 @@
+#include <robo_hardware2.h>
+
+class Desvio
+{
+  public:
+    
+    void DesviarEsquerda();
+    void DesviarDireita();
+    void atualizarValorSonar();
+
+    float valorSonar;
+
+  private: 
+    
+    #define espera 780 
+    #define esperaFrente 870  
+
+    #define velFrente 25
+    #define velDireito 26
+};

@@ -1,96 +1,35 @@
 #include "DesviarObstaculo.h"
+#include <robo_hardware2.h>
 
-void Desvio::DesviarEsquerda()
+void Desvio::DesviarObstaculo(int sentido)
 {
-  robo.acionarMotores(0,0); // identifica o objeto e para o robo
-    delay(espera);
 
-    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita   
-    delay(espera);
+  velEsq = velFrente * sentido;
+  velDir = -velEsq;
+    
+  for(int i = 0; i < esperaCiclos; i++) //primeiro ciclo: sai da pista e vai ate o obstaculo
+  {
+    robo.acionarMotores(velEsq, velDir);
+    delay(esperaVirar); //gira um pouco
 
-    robo.acionarMotores(0,0);
-    delay(espera);
+    robo.acionarMotores(velFrente, velFrente);
+    delay(esperaFrente); // anda um pouco pra frente
+  }
 
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
 
-    robo.acionarMotores(0,0);
-    delay(espera);
+  for(int i = 0; i < esperaCiclos; i++) // segundo ciclo: volta ate a pista
+  {
+    robo.acionarMotores(velEsq, velDir);
+    delay(esperaVirar); //gira um pouco
 
-    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(750);
+    robo.acionarMotores(velFrente, velFrente);
+    delay(esperaFrente); // anda um pouco pra frente
+  }
   
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
-    delay(espera);
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Desvio::DesviarDireita()
-{
-  robo.acionarMotores(0,0); // identifica o objeto e para o robo
-    delay(espera);
-
-    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita   
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(esperaFrente);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(-velFrente, velDireito); // gira o robo pra esquerda
-    delay(espera);
-
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, velDireito); //anda pra frente depois de girar para poder desviar do obstaculo
-    delay(750);
-  
-    robo.acionarMotores(0,0);
-    delay(espera);
-
-    robo.acionarMotores(velFrente, -velDireito); // gira o robo pra direita
-    delay(espera);
 }
 
-void Desvio::atualizarValorSonar()
+
+void Desvio::AtualizarValorSonar()
 {
   valorSonar = robo.lerSensorSonarFrontal();
 }
